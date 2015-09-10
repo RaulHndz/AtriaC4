@@ -125,8 +125,6 @@
 	var total = 0;
 
 
-
-
 	$( document ).ready(function() {
 		$('#divrecibo').hide();
     	$('#txtEmpleado').focus();
@@ -139,6 +137,37 @@
 		$('#btnBuscarart').removeAttr('disabled');
 		$('#txtArticulo').focus();
 
+
+			/*
+			ESC -> 27 -> Limpiar
+			F1 -> 112 -> Pagar
+			F2 -> 113 -> Borrar
+			F3 -> 114 -> Buscar Art
+			*/
+
+		 	document.onkeydown = function (e) {
+		        e = e || event;
+
+		        if (e.keyCode == 27) {
+		            
+		            Limpiar();
+
+        		}else if(e.keyCode == 112){
+
+        			Pagar();
+
+        		}else if(e.keyCode == 113){
+
+        			Borrar();
+
+        		}else if(e.keyCode == 114){
+
+        			Buscar();
+
+        		}
+
+        		e.stopPropagation();
+    		}
 
 	});
 
@@ -392,44 +421,49 @@
 
 		}else{
 
-			$('#txtPPago').val('');
-			var clie = $('#txtEmpleado').val() + ' - ' + $('#txtNombre').val();
-			$('#txtPEmpleado').val(clie);
+			var dcliente = $('#txtEmpleado').val();
 
-			if ($('input:radio[name=rbtformapago]:checked').val() == 'C') {
+			if (dcliente != '') {
 
-				
-				var cred = $('#txtCredito').val();
-				
-				if (Math.round((cred- total)*100)/100 >= 0) {
+				$('#txtPPago').val('');
+				var clie = $('#txtEmpleado').val() + ' - ' + $('#txtNombre').val();
+				$('#txtPEmpleado').val(clie);
 
-					
-					var credr = Math.round((cred- total)*100)/100;
-
+				if ($('input:radio[name=rbtformapago]:checked').val() == 'C') {
 
 					
-					$('#txtPDisponible').val('$'+cred);
-					$('#txtRestante').val('$'+credr);
-					$('#txtPTotal2').val('$'+total);
+					var cred = $('#txtCredito').val();
+					
+					if (Math.round((cred- total)*100)/100 >= 0) {
+
+						
+						var credr = Math.round((cred- total)*100)/100;
 
 
-					$('#view_pago_contado').modal('hide');
-					$('#view_pago').modal('show');
-					$('#btn_PagarCredito').focus();
+						
+						$('#txtPDisponible').val('$'+cred);
+						$('#txtRestante').val('$'+credr);
+						$('#txtPTotal2').val('$'+total);
 
+
+						$('#view_pago_contado').modal('hide');
+						$('#view_pago').modal('show');
+						$('#btn_PagarCredito').focus();
+
+					}else{
+						alert('No dispone de suficiente saldo');
+					}
 				}else{
-					alert('No dispone de suficiente saldo');
+						
+						$('#txtPTotal').val('$'+total);
+						$('#view_pago_contado').modal('show');
+						$('#txtPPago').focus();
+						$('#txtPPago').attr('min',total);
 				}
+
 			}else{
-					
-					$('#txtPTotal').val('$'+total);
-					$('#view_pago_contado').modal('show');
-					$('#txtPPago').focus();
-					$('#txtPPago').attr('min',total);
-			}
-
-
-			
+				alert('Ingresar un Cliente para facturar');
+			}	
 
 		}
 
