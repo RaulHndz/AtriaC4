@@ -46,7 +46,7 @@
 			  <div class="form-group">
 			    <label for="txtMonto" class="col-lg-3 control-label">Monto:</label>
 			    <div class="col-lg-7">
-			      <input type="text" class="form-control" id="txtMonto"  placeholder=""  disabled="true">
+			      <input type="text" class="form-control" id="txtMonto"  placeholder="" disabled="true">
 			    </div>
 			  </div>
 			  
@@ -71,7 +71,10 @@
 
 $("#txtCaja").keyup(function(event){
     if(event.keyCode == 13){
-        CargarCaja();
+       
+       if ($('#txtCaja').val() != '') {
+ 			CargarCaja();
+       }
     }
 });
 
@@ -165,7 +168,7 @@ function CargarCaja(){
 											                '<div class="form-group">              '+
 											                '  	<label class="col-lg-3 control-label negrita" for="txtTotal">Monto Apertura:</label>'+
 											                ' 	<div class="col-lg-3">'+
-											                '    	<input type="number" class="form-control" id="txtApertura" name="txtApertura" placeholder="$0.00" onkeypress="return justNumbers(event);"  min="0" max="1000" required>'+
+											                '    	<input type="number" class="form-control" id="txtApertura" name="txtApertura" value="0" onkeypress="return justNumbers(event);"  min="0" max="1000" required>'+
 											                '  	</div>      '+
 											                '  	<button type="submit" class="btn btn-primary" id="btnEntrar" type="submit">Aperturar</button>'+
 											                '  	<button type="submit" class="btn btn-danger" onclick="Limpiar()">Limpiar</button>'+
@@ -173,6 +176,8 @@ function CargarCaja(){
 
 											                
 														 '</center>');
+								
+								$('#txtApertura').focus();
 				           		
 
 				           }

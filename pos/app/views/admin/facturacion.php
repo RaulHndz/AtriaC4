@@ -88,7 +88,7 @@
 					    <div class="col-lg-1">
 					      <input type="text" class="form-control" id="txtPrecio" placeholder="$" disabled>
 					    </div>
-					    <label for="txtCantidad" class="col-lg-1 control-label negrita" >Cantidad:</label>
+					    <label for="txtCantidad" class="col-lg-1 control-label negrita">Cantidad:</label>
 					    <div class="col-lg-1">
 					      <input type="text" class="form-control" id="txtCantidad" placeholder="0" disabled onkeypress="return justNumbers(event);">
 					    </div>
@@ -513,7 +513,7 @@
  		$('#txtTotal').val('0.00');
 		$('#txtArticulo').val('');	
 		$('#txtDescripcion').val('');	
-		$('#txtCantidad').val('');	
+		$('#txtCantidad').val('1');	
 		$('#wrapper_master').html('');
 		$('#wrapper_recibos').html('');	
 		$('#txtPrecio').val('');
