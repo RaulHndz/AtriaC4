@@ -48,10 +48,10 @@
 		  <div class="form-group">
 		    <label for="txtConsecutivo" class="col-lg-2 control-label negrita">Tipo de Pago:</label>
 		    	   
-		    <div class="col-lg-1">
+		    <div class="col-lg-1 negrita">
 		      	<input type="radio" name="rbtformapago" value="C" id="chkCredito"  disabled checked><label for="chkCredito">Credito</label>			
 		    </div>
-		    <div class="col-lg-1">
+		    <div class="col-lg-1 negrita">
 		      	<input type="radio" name="rbtformapago" value="E"  id="chkContado" disabled><label for="chkContado">Contado</label>		
 		    </div>
 		    <div class="col-lg-1">
@@ -77,18 +77,18 @@
 
 					<div class="form-horizontal">				  
 					  	<div class="form-group">
-					    <label for="txtArticulo" class="col-lg-1 control-label">Articulo:</label>
+					    <label for="txtArticulo" class="col-lg-1 control-label negrita">Articulo:</label>
 					    <div class="col-lg-1">
 					      <input type="text" class="form-control" id="txtArticulo" placeholder="Codigo" disabled>
 					    </div>
 						<div class="col-lg-3">
 						  <input type="text" class="form-control" id="txtDescripcion" placeholder="Nombre Art" disabled>
 						</div>
-						<label for="txtPrecio" class="col-lg-2 control-label">Precio: ($)</label>
+						<label for="txtPrecio" class="col-lg-2 control-label negrita">Precio: ($)</label>
 					    <div class="col-lg-1">
 					      <input type="text" class="form-control" id="txtPrecio" placeholder="$" disabled>
 					    </div>
-					    <label for="txtCantidad" class="col-lg-1 control-label" >Cantidad:</label>
+					    <label for="txtCantidad" class="col-lg-1 control-label negrita" >Cantidad:</label>
 					    <div class="col-lg-1">
 					      <input type="text" class="form-control" id="txtCantidad" placeholder="0" disabled onkeypress="return justNumbers(event);">
 					    </div>
