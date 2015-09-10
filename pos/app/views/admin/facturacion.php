@@ -130,6 +130,16 @@
 	$( document ).ready(function() {
 		$('#divrecibo').hide();
     	$('#txtEmpleado').focus();
+
+    	$('#chkCredito').removeAttr('disabled');
+		$('#chkContado').removeAttr('disabled');
+		$('#btnPagar').removeAttr('disabled');
+		$('#btnBorrar').removeAttr('disabled');
+		$('#txtArticulo').removeAttr('disabled');
+		$('#btnBuscarart').removeAttr('disabled');
+		$('#txtArticulo').focus();
+
+
 	});
 
 	$("#txtEmpleado").keyup(function(event){
@@ -453,7 +463,7 @@
 		$('#txtEstado').val('');
 		$('#txtCredito').val('$');
 
-		$('#chkCredito').attr('disabled','true');
+		/*$('#chkCredito').attr('disabled','true');
 		$('#chkContado').attr('disabled','true');
 
 		$('#btnPagar').attr('disabled','true');
@@ -462,7 +472,7 @@
 		$('#txtArticulo').attr('disabled','true');		
 		$('#txtCantidad').attr('disabled','true');
 		$('#btnAgregar').attr('disabled','true');
-		$('#btnBuscarart').attr('disabled','true');
+		$('#btnBuscarart').attr('disabled','true');*/
 
 		$('#txtEmpleado').focus();
 
