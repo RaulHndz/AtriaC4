@@ -126,7 +126,7 @@
 
 
 	$( document ).ready(function() {
-		$('#divrecibo').hide();
+		//$('#divrecibo').hide();
     	$('#txtEmpleado').focus();
 
     	$('#chkCredito').removeAttr('disabled');
@@ -765,18 +765,34 @@
 <div  id="divrecibo">
 	
 	<div id="encabezado"> 
-			********* Cafeteria Estrada*********** 
+			********* Cafeteria Estrada****************** 
 	</div>
 	<div id="fecha"> Fecha: <?php echo date("Y-m-d H:i:s"); ?></div>
 	<div id="texto"> 
 		<br>Ticket: <span id="ticket_recibo"></span>
 		<br>Cliente: <span id="cliente_recibo"></span>
-		<br>Nombre : <span id="nombre_recibo"></span>
-		<br>Tipo Pago: <span id="tipopago_recibo"></span>
-		<br>Su compra es: $<span id="total_recibo"></span>
+		<br>Nombre : <span id="nombre_recibo"></span>		
+		<br>Tipo Pago: <span id="tipopago_recibo"></span>		
+		<br>Contado: <span id=""></span>
+		<br>Credito: <span id=""></span>
 		<br>Su credito disponible es: $<span id="credito_recibo"></span>
 		<br>
-		<br>	*********Gracias por su compra********
+		<br>
+		<table style="boder: 1px; font-size:11px !important;">
+		<tr id="detarecibo">
+			<th width="125px">Articulo</th>
+			<th width="75px">Cantidad</th>
+			<th width="75px">Precio </th>
+		</tr>
+		<tr>
+			<td width="125px" style="font-size:10px">Producto 1</td>
+			<td width="75px"  style="font-size:10px">10</td>
+			<td width="75px"  style="font-size:10px">$50 </td>
+		</tr>
+		</table>
+		<br>Total: $<span id="total_recibo"></span>
+
+		<br>	*********Gracias por su compra************
 	</div>
 
 </div>
