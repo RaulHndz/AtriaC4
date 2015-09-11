@@ -951,6 +951,7 @@
 	<div id="texto" style="font-size:8px !important;"> 
 	<div id="fecha">Fecha: <?php echo date("Y-m-d H:i:s"); ?></div>
 		<br>Ticket: <span id="ticket_recibo"></span>
+		<br>Cajero: <?php  echo $this->session->userdata('user_name2'); ?>
 		<br>Cliente: <span id="cliente_recibo"></span>
 		<br>Nombre : <span id="nombre_recibo"></span>
 		<br>********************************************	
