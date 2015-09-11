@@ -361,6 +361,7 @@
 
     		var codfact_ = (data.codigo);
 			Pago_detalle(codfact_);
+			<
 			ImprimirTicket(codfact_,'CREDITO');
 
     	}).fail(function(){
