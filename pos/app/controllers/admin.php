@@ -91,6 +91,24 @@ class Admin extends CI_Controller {
 
     }
 
+     public function masterfac_guardar_2(){
+      
+
+        $cierre_caja = $this->input->post('cod_cierre');
+        $forma_pago = $this->input->post('forma_pago');
+        $total_p = $this->input->post('total_p');
+        $total_p_credito = $this->input->post('total_p_credito');
+        $total_p_contado = $this->input->post('total_p_contado');
+
+        $codigoemp = $this->input->post('codigoemp');
+
+        $this->load->model('ConfigCajaModel');
+        $datafac = $this->ConfigCajaModel->masterfac2($cierre_caja,$forma_pago,$total_p,$codigoemp, $total_p_credito,$total_p_contado);
+
+        print(json_encode($datafac));       
+
+    }
+
   
 
     public function facturacion(){

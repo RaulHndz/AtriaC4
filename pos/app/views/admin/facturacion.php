@@ -47,12 +47,14 @@
 		  
 		  <div class="form-group">
 		    <label for="txtConsecutivo" class="col-lg-2 control-label negrita">Tipo de Pago:</label>
-		    	   
-		    <div class="col-lg-1 negrita">
-		      	<input type="radio" name="rbtformapago" value="C" id="chkCredito"  disabled checked><label for="chkCredito">Credito</label>			
-		    </div>
-		    <div class="col-lg-1 negrita">
-		      	<input type="radio" name="rbtformapago" value="E"  id="chkContado" disabled><label for="chkContado">Contado</label>		
+		    
+		    <div class="" id="rbtTipoPago">	   
+			    <div class="col-lg-1 negrita">
+			      	<input type="radio" name="rbtformapago" value="C" id="chkCredito"  disabled checked><label for="chkCredito">Credito</label>			
+			    </div>
+			    <div class="col-lg-1 negrita">
+			      	<input type="radio" name="rbtformapago" value="E"  id="chkContado" disabled><label for="chkContado">Contado</label>		
+			    </div>
 		    </div>
 		    <div class="col-lg-1">
 		      	<input type="checkbox" name="chkTicket"   id="chkTicket" checked="true" >Generar Ticket		
@@ -108,8 +110,7 @@
 		        </tbody>
 		    </table>
 		</div>
-	</div>
-
+		</div>
 
 </div>
 
@@ -125,8 +126,11 @@
 	var total = 0;
 
 
+	var credito_valor = 0;
+	var contado_valor = 0;
+
 	$( document ).ready(function() {
-		//$('#divrecibo').hide();
+		$('#divrecibo').hide();
     	$('#txtEmpleado').focus();
 
     	$('#chkCredito').removeAttr('disabled');
@@ -139,16 +143,18 @@
 
 
 			/*
-			ESC -> 27 -> Limpiar
+			
 			F1 -> 112 -> Pagar
 			F2 -> 113 -> Borrar
 			F3 -> 114 -> Buscar Art
+			F4 -> 115 ->Limpiar
+			ALT GR -> 18 -> CambiarTipoPago
 			*/
 
 		 	document.onkeydown = function (e) {
 		        e = e || event;
 
-		        if (e.keyCode == 27) {
+		        if (e.keyCode == 115) {
 		            
 		            Limpiar();
 
@@ -163,6 +169,10 @@
         		}else if(e.keyCode == 114){
 
         			Buscar();
+
+        		}else if(e.keyCode == 18){
+
+        			CambiarTipoDePago();
 
         		}
 
@@ -224,6 +234,18 @@
 	    }
 	});
 
+	function prueba(){
+
+		$('#view_pago_pregunta').modal('show');
+
+	}
+
+	function prueba2(){
+
+		$('#view_pago_pregunta').modal('hide');
+		$('#view_pago_creditocontado').modal('show');
+
+	}
 
     function justNumbers(e)
     {
@@ -234,6 +256,23 @@
 	    return /\d/.test(String.fromCharCode(keynum));
     }
 
+   	function CambiarTipoDePago(){
+
+   		if ($('input:radio[name=rbtformapago]:checked').val() == 'C') {
+
+			
+   			$('#rbtTipoPago').html('');
+   			$('#rbtTipoPago').append('<div class="col-lg-1 negrita"><input type="radio" name="rbtformapago" value="C" id="chkCredito"  ><label for="chkCredito">Credito</label></div><div class="col-lg-1 negrita"><input type="radio" name="rbtformapago" value="E"  id="chkContado"  checked><label for="chkContado">Contado</label></div>');
+
+   		}else{
+   			
+   			$('#rbtTipoPago').html('');
+   			$('#rbtTipoPago').append('<div class="col-lg-1 negrita"><input type="radio" name="rbtformapago" value="C" id="chkCredito"   checked><label for="chkCredito">Credito</label></div><div class="col-lg-1 negrita"><input type="radio" name="rbtformapago" value="E"  id="chkContado" ><label for="chkContado">Contado</label></div>');
+
+
+   		}
+
+   	}
 
 	function ImprimirTicket(ticket_,tipopago_){
 
@@ -246,14 +285,61 @@
 			var rec_credito_dist = $('#txtCredito').val();
 
 			if (tipopago_ == "CREDITO") {
-				credito_dist = credito_ - pago_; 
-				credito_dist = Math.round(credito_dist * 100)/100;
 
-			}	
+				rec_credito_dist = rec_credito_ - rec_pago_; 
+				rec_credito_dist = Math.round(rec_credito_dist * 100)/100;
+				credito_valor = rec_pago_;
+				$('#credito_valor_').html('$'+credito_valor);
+				$('#contado_valor_').html('');
+
+			}else if(tipopago_ == "CONTADO"){
+
+				contado_valor = rec_pago_;
+				$('#contado_valor_').html('$'+contado_valor);	
+				$('#credito_valor_').html('');
+
+			}else if(tipopago_ == "CREDITO / CONTADO"){
+
+				rec_credito_dist = 0;
+
+				$('#credito_valor_').html('$'+credito_valor);
+				$('#contado_valor_').html('$'+contado_valor);	
+			
+
+			}		
+
+			$('#detarecibo').html('');
+					$("#grdFactura tbody tr").each(function (index) 
+			        {
+			            var codart_, preciot_, canidadt_;
+			            $(this).children("td").each(function (index2) 
+			            {
+			                switch (index2) 
+			                {
+			                    case 1: codart_ = $(this).text();
+			                            break;
+			                    case 3: preciot_ = $(this).text();
+			                            break;
+			                    case 2: canidadt_ = $(this).text();
+			                            break;
+			                }
+			            })
+
+			            var cadena_raul = '<tr><td width="125px" style="text-align:left;">'+codart_+'</td><td width="75px" style="text-align:center;">'+canidadt_+'</td><td width="75px" style="text-align:center;">'+preciot_+' </td></tr>'
+
+			          
+
+			            $('#detarecibo').append(cadena_raul);
+
+			            
+			        });
 
 			$.ajax({
 
 			}).done(function (){
+
+
+				
 
 
 				$('#ticket_recibo').html(ticket_);
@@ -281,12 +367,78 @@
 	
 	}
 
+	
+
+
+	function PagoCreditoContado(){
+
+		var pago = $('#txtPPago2').val();
+		credito_valor = $('#txtcreditodisponible').val();
+		contado_valor = $('#txtpagocontado').val();
+    	var vuelto_ = ((pago-contado_valor)*100)/100;
+
+    	
+
+    	if (pago != "") {
+
+    		if (vuelto_ >= 0) {
+
+    			$('#view_pago_creditocontado').modal('hide');
+    	
+		    	contador = 0;
+
+		    	var cod_cierre_ = ("<?php echo $this->session->userdata('cierre') ?>");
+		    	var forma_pago_ = 3;
+		    	var total_p_ = total;
+
+		    	var url_ = "<?php echo base_url().'admin/masterfac_guardar_2/'; ?>";
+
+
+
+		    	$.ajax({
+		    		url: url_,
+		    		type: 'post',
+		    		dataType: 'json',
+		    		data: {codigoemp:codEmp, cod_cierre:cod_cierre_, forma_pago: forma_pago_, total_p:total_p_,total_p_credito: credito_valor,total_p_contado:contado_valor}
+		    	}).done(function(data){
+
+		
+		    		var codfact_ = (data.codigo);
+		    		Pago_detalle(codfact_);		   		
+		    		ImprimirTicket(codfact_,'CREDITO / CONTADO');
+
+
+		    	}).fail(function(){
+
+		    		alert('Error');
+
+		    	});
+
+
+		    	var vuelto = (vuelto_*100)/100;
+		   
+
+
+		    	
+		    	alert('Gracias Por Su Compra!!! \n\n Vuelto: $'+vuelto);
+
+    		}else{
+    			alert('Ingresar un pago mayor o igual al monto total a pagar');
+    		}
+
+    	}else{
+    		$('#txtPPago').focus();
+    	}
+
+	}
+
  	function Pagar_contado(){
 
 
     	var pago = $('#txtPPago').val();
 
     	var vuelto_ = ((pago-total)*100)/100;
+
 
 
     	if (pago != "") {
@@ -313,6 +465,7 @@
 
 		    		var codfact_ = (data.codigo);
 		    		Pago_detalle(codfact_);
+		    		
 		    		ImprimirTicket(codfact_,'CONTADO');
 
 		    	}).fail(function(){
@@ -322,7 +475,7 @@
 		    	});
 
 
-		    	var vuelto = ((pago-total)*100)/100
+		    	var vuelto = (vuelto_ * 100)/100
 		   
 
 
@@ -360,8 +513,7 @@
     	}).done(function(data){
 
     		var codfact_ = (data.codigo);
-			Pago_detalle(codfact_);
-			<
+			Pago_detalle(codfact_);			
 			ImprimirTicket(codfact_,'CREDITO');
 
     	}).fail(function(){
@@ -369,8 +521,6 @@
     		alert('Error');
 
     	});
-
-
 
     	
     }
@@ -403,7 +553,8 @@
 		    		dataType: 'json',
 		    		data: {codfact:codf, codart: codart_, preciof: pre ,cantidadf:canidadt_ }
 		    	}).done(function(data){
-	    			    		
+
+
 		    	}).fail(function(){
 
 		    		alert('Error');
@@ -444,7 +595,7 @@
 						
 						$('#txtPDisponible').val('$'+cred);
 						$('#txtRestante').val('$'+credr);
-						$('#txtPTotal2').val('$'+total);
+						$('#txtPTotal3').val('$'+total);
 
 
 						$('#view_pago_contado').modal('hide');
@@ -452,11 +603,38 @@
 						$('#btn_PagarCredito').focus();
 
 					}else{
-						alert('No dispone de suficiente saldo');
+						
+						if (cred == 0) {
+
+							alert('No dispone de  saldo, Seleccionar la opcion "CONTADO"');
+
+						}else{
+
+							$('#a1').html('');
+							$('#a2').html('');
+							$('#a3').html('');
+
+							$('#a1').html('$'+total);
+							$('#a2').html('$'+cred);
+							$('#a3').html('$'+(Math.round((total-cred)*100)/100));
+
+							$('#txtPTotal').val('$'+total);
+							$('#txtcreditodisponible').val(cred);
+							$('#txtpagocontado').val((Math.round((total-cred)*100)/100));
+
+
+							prueba();
+
+						}
+
+						
+
 					}
 				}else{
 						
-						$('#txtPTotal').val('$'+total);
+						
+						$('#txtPTotal2').val('$'+total);
+
 						$('#view_pago_contado').modal('show');
 						$('#txtPPago').focus();
 						$('#txtPPago').attr('min',total);
@@ -464,6 +642,7 @@
 
 			}else{
 				alert('Ingresar un Cliente para facturar');
+				$('#txtEmpleado').focus();
 			}	
 
 		}
@@ -514,7 +693,7 @@
  		$('#txtTotal').val('0.00');
 		$('#txtArticulo').val('');	
 		$('#txtDescripcion').val('');	
-		$('#txtCantidad').val('1');	
+		$('#txtCantidad').val('');	
 		$('#wrapper_master').html('');
 		$('#wrapper_recibos').html('');	
 		$('#txtPrecio').val('');
@@ -536,7 +715,7 @@
 	    	if (data) {
 	    		codEmp = data.codigo;
 
-	    		$('#txtEmpleado').attr('disabled','');
+	    		//$('#txtEmpleado').attr('disabled','');
 	    		$('#txtNombre').val(data.nombre);
 		    	$('#txtEstado').val(data.estado);
 		    	$('#txtCredito').val(data.credito);
@@ -763,41 +942,146 @@
 
 </script>
 
-<div  id="divrecibo">
+<div  id="divrecibo" >
 	
 	<div id="encabezado"> 
-			********* Cafeteria Estrada****************** 
+			********* Cafeteria Estrada ************** 
 	</div>
-	<div id="fecha"> Fecha: <?php echo date("Y-m-d H:i:s"); ?></div>
-	<div id="texto"> 
+	
+	<div id="texto" style="font-size:8px !important;"> 
+	<div id="fecha">Fecha: <?php echo date("Y-m-d H:i:s"); ?></div>
 		<br>Ticket: <span id="ticket_recibo"></span>
 		<br>Cliente: <span id="cliente_recibo"></span>
-		<br>Nombre : <span id="nombre_recibo"></span>		
+		<br>Nombre : <span id="nombre_recibo"></span>
+		<br>********************************************	
 		<br>Tipo Pago: <span id="tipopago_recibo"></span>		
-		<br>Contado: <span id=""></span>
-		<br>Credito: <span id=""></span>
+		<br>Pago Contado: <span id="contado_valor_"></span>
+		<br>Pago Credito: <span id="credito_valor_"></span>
+		<br>********************************************
 		<br>Su credito disponible es: $<span id="credito_recibo"></span>
 		<br>
 		<br>
-		<table style="boder: 1px; font-size:11px !important;">
-		<tr id="detarecibo">
-			<th width="125px">Articulo</th>
-			<th width="75px">Cantidad</th>
-			<th width="75px">Precio </th>
-		</tr>
+		<table style="boder: 1px; font-size:8px !important;">
+		<thead>
 		<tr>
-			<td width="125px" style="font-size:10px">Producto 1</td>
-			<td width="75px"  style="font-size:10px">10</td>
-			<td width="75px"  style="font-size:10px">$50 </td>
+			<th width="125px" style="text-align:left;">Articulo</th>
+			<th width="75px" style="text-align:center;">Cantidad</th>
+			<th width="75px" style="text-align:center;">Precio </th>
 		</tr>
+		</thead>
+		<tbody id="detarecibo">
+			
+		</tbody>
 		</table>
-		<br>Total: $<span id="total_recibo"></span>
+		<br>TOTAL: $<span id="total_recibo"></span>
 
-		<br>	*********Gracias por su compra************
+		
 	</div>
-
+	<br>	******** Gracias por su compra **********
 </div>
 
+
+<!--VerificarPago-->
+
+<div id="view_pago_pregunta" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h5 class="modal-title" id="vw_nombre">Pago</h5>
+                <hr>
+            </div>
+            <div class="modal-body">
+			
+				<p class="txt1">
+				El monto total de su compra es de <span id="a1">$00.00</span> y su disponibilidad 
+				de credito es de <span id="a2">$0.00</span>,	haciendo una diferencia de <span id="a3">$0.00</span>
+
+				</p>
+				<br>
+				<label class="txt2">¿Desea Pagar la Diferencia en Contado?</label>
+
+            </div>
+            <div class="modal-footer">
+				<form>
+	            	<button type="button" class="btn btn-primary" id="btn_PagarCredito" onclick="prueba2()">SI</button>                
+	                <button type="button" class="btn btn-default" data-dismiss="modal">NO</button>
+	            	
+	            </form>
+            </div>
+    </div>
+  </div>
+</div>
+
+<!--VerificarPago-->
+<div id="view_pago_creditocontado" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="vw_nombre">Confirmacion de Pago</h4>
+            </div>
+            <div class="modal-body">
+
+				<div class="form-horizontal">
+		  
+					  <div class="form-group">
+					    
+					    <label class="col-lg-3 control-label negrita" for="txtPEmpleado">Empleado:</label>
+						<div class="col-lg-7">
+					      <input type="text" class="form-control" id="txtPEmpleado" value="Raul Eduardo Herandez" disabled>
+					    </div>			
+					    
+					  </div>
+					  <div class="form-group">
+					    
+					    <label class="col-lg-3 control-label negrita" for="txtPFormaPago">Forma de Pago:</label>
+						<div class="col-lg-4">
+					      <input type="text" class="form-control" id="txtPFormaPago" value="Credito / Contado" disabled>
+					    </div>				
+					    
+					  </div>
+					  <div class="form-group">
+					    
+					    <label class="col-lg-3 control-label negrita" for="txtPTotal">Total a Pagar:</label>
+						<div class="col-lg-3">
+					      <input type="text" class="form-control" id="txtPTotal" value="$0.00" disabled>
+					    </div>	
+					    
+					  </div>
+					  <div class="form-group">
+					    
+					    <label class="col-lg-3 control-label negrita" for="txtcreditodisponible">Credito Disponible:</label>
+						<div class="col-lg-3">
+					      <input type="text" class="form-control" id="txtcreditodisponible" value="$0.00" disabled>
+					    </div>	
+					    
+					  </div>
+					  <div class="form-group">
+					    
+					    <label class="col-lg-3 control-label negrita" for="txtpagocontado">Pago Contado:</label>
+						<div class="col-lg-3">
+					      <input type="text" class="form-control" id="txtpagocontado" value="$0.00" disabled>
+					    </div>	
+					    
+					  </div>
+
+				</div>
+				
+            </div>
+            <div class="modal-footer">
+				<form>
+	            	<label class="col-lg-3 control-label negrita" style="color:rgba(255, 0, 0, 0.8);">Pago:</label>
+							<div class="col-lg-3">
+						      <input type="text" class="form-control" id="txtPPago2" placeholder="$0.00" onkeypress="return justNumbers(event);"  min="0" max="1000" required>
+					</div>	
+	            	<button type="button" class="btn btn-primary" id="btn_PagarCredito" onclick="PagoCreditoContado()">Pagar</button>                
+	                <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+	            </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!--VerificarPago-->
 <div id="view_pago_contado" class="modal fade" role="dialog">
@@ -829,9 +1113,9 @@
 					  </div>
 					  <div class="form-group">
 					    
-					    <label class="col-lg-3 control-label negrita" for="txtPTotal">Total a Pagar:</label>
+					    <label class="col-lg-3 control-label negrita" for="txtPTotal2">Total a Pagar:</label>
 						<div class="col-lg-3">
-					      <input type="text" class="form-control" id="txtPTotal" value="$0.00" disabled>
+					      <input type="text" class="form-control" id="txtPTotal2" value="$0.00" disabled>
 					    </div>				
 					    
 					  </div>
@@ -845,7 +1129,7 @@
 							<div class="col-lg-3">
 						      <input type="text" class="form-control" id="txtPPago" placeholder="$0.00" onkeypress="return justNumbers(event);"  min="0" max="1000" required>
 					</div>	
-	            	<button type="button" class="btn btn-primary" id="btn_PagarCredito" onclick="Pagar_contado()">Pagar</button>                
+	            	<button type="button" class="btn btn-primary" id="btn_PagarContado" onclick="Pagar_contado()">Pagar</button>                
 	                <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
 	            </form>
             </div>
@@ -891,9 +1175,9 @@
 					  </div>
 					  <div class="form-group">
 					    
-					    <label class="col-lg-3 control-label negrita" for="txtPTotal">Total a Pagar:</label>
+					    <label class="col-lg-3 control-label negrita" for="txtPTotal3">Total a Pagar:</label>
 						<div class="col-lg-3">
-					      <input type="text" class="form-control" id="txtPTotal2" disabled>
+					      <input type="text" class="form-control" id="txtPTotal3" disabled>
 					    </div>				
 					    
 					  </div>

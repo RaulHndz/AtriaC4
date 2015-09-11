@@ -87,6 +87,24 @@ class ConfigCajaModel extends CI_Model {
 
 	}
 
+	public function masterfac2($cierre_caja,$forma,$total,$cliente,$total_credito,$total_contado){
+
+		
+		$sql ="CALL GuardarFactura2(?,?,?,?,?,?)";
+
+
+		$query = $this->db->query($sql,array($cierre_caja,$forma,$total,$cliente,$total_credito,$total_contado));
+
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else{
+			return false;
+		}
+
+
+
+	}
+
 	public function datosArticulo($articulo){
 
 		
