@@ -88,14 +88,14 @@
 						</div>
 						<label for="txtPrecio" class="col-lg-2 control-label negrita">Precio: ($)</label>
 					    <div class="col-lg-1">
-					      <input type="text" class="form-control" id="txtPrecio" placeholder="$" disabled>
+					      <input type="text" class="form-control" id="txtPrecio" placeholder="$" onkeypress="return justNumbers(event);" disabled>
 					    </div>
 					    <label for="txtCantidad" class="col-lg-1 control-label negrita">Cantidad:</label>
 					    <div class="col-lg-1">
 					      <!--<input type="text" class="form-control" id="txtCantidad" placeholder="0" disabled onkeypress="return justNumbers(event);">-->
-					      <input type="text" class="form-control" id="txtCantidad" placeholder="0" disabled>
+					      <input type="text" class="form-control" id="txtCantidad" placeholder="0"  value="1" disabled>
 					    </div>
-						<button type="button" class="btn btn-primary" id="btnAgregar" disabled><img src="<?php echo $assets_uri; ?>img/bt_speed_dial_1x.png" alt=""></button>
+						<button type="button" class="btn btn-primary" id="btnAgregar"  onclick ="AgregarDetalle()" disabled><img src="<?php echo $assets_uri; ?>img/bt_speed_dial_1x.png" alt=""></button>
 					    <button type="button" class="btn btn-default" id="btnBuscarart" onclick="Buscar()" disabled><img src="<?php echo $assets_uri; ?>img/ic_search_grey600_18dp.png" alt=""></button>
 				  	</div>
 
@@ -202,10 +202,21 @@
 	    }
 	});
 
+	$("#txtPrecio").keyup(function(event){
+	    if(event.keyCode == 13){
+
+	    	if ($('#txtPrecio').val() != '') {
+				$("#txtCantidad").focus();
+	    	}
+	        
+	        
+	    }
+	});
+
 	$("#txtCantidad").keyup(function(event){
 	    if(event.keyCode == 13){
 
-	    	if ($('#txtCantidad').val() != '') {
+	    	if ($('#txtCantidad').val() != '' && $('#txtPrecio').val() != '') {
 				AgregarDetalle();
 	    	}
 	        
@@ -368,9 +379,6 @@
 	
 	}
 
-	
-
-
 	function PagoCreditoContado(){
 
 		var pago = $('#txtPPago2').val();
@@ -526,7 +534,6 @@
     	
     }
 
-
     function Pago_detalle(codf){
 
     	
@@ -654,7 +661,7 @@
 		$('#txtPrecio').val('');	
 		$('#txtArticulo').val('');	
 		$('#txtDescripcion').val('');	
-		$('#txtCantidad').val('');	
+		$('#txtCantidad').val('1');	
 		$('#wrapper_recibos').html('');	
 		$('#txtTotal').val('0.00');
 		$('#txtArticulo').focus();
@@ -694,7 +701,7 @@
  		$('#txtTotal').val('0.00');
 		$('#txtArticulo').val('');	
 		$('#txtDescripcion').val('');	
-		$('#txtCantidad').val('');	
+		$('#txtCantidad').val('1');	
 		$('#wrapper_master').html('');
 		$('#wrapper_recibos').html('');	
 		$('#txtPrecio').val('');
@@ -770,16 +777,32 @@
 
 	    	if (data) {
 
-	    		art = data.codigo;
-	    		precio = data.precio1;
-	    		descripcion = data.nombre;
+	    		if (idarticulo_ == "///") {
+
+	    			art = data.codigo;
+		    		descripcion = data.nombre;
 
 
-	    		$('#txtDescripcion').val(data.nombre);
-	    		$('#txtPrecio').val(data.precio1);	
-	    		$('#txtCantidad').removeAttr('disabled');
-				$('#btnAgregar').removeAttr('disabled');
-				$('#txtCantidad').focus();
+		    		$('#txtDescripcion').val(data.nombre);
+		    		$('#txtPrecio').val('');		    		
+		    		$('#txtPrecio').removeAttr('disabled');
+		    		$('#txtCantidad').removeAttr('disabled');
+					$('#btnAgregar').removeAttr('disabled');
+					$('#txtPrecio').focus();
+					
+
+	    		}else{
+	    			art = data.codigo;
+		    		precio = data.precio1;
+		    		descripcion = data.nombre;
+
+					$('#txtPrecio').attr('disabled');
+		    		$('#txtDescripcion').val(data.nombre);
+		    		$('#txtPrecio').val(data.precio1);	
+		    		$('#txtCantidad').removeAttr('disabled');
+					$('#btnAgregar').removeAttr('disabled');
+					$('#txtCantidad').focus();
+	    		}
 
 	    	}else{
 	    		alert('Articulo No Existe');
@@ -825,6 +848,13 @@
 
 			}
 
+
+			if (art == "///") {
+
+				precio = $('#txtPrecio').val();
+
+			};
+
 			var monto_ = Math.round((cant*precio)*100)/100;
 
 			$('#wrapper_recibos').append('	<tr id="'+contador+'">'+
@@ -837,28 +867,7 @@
 										'	</tr>');
 
 
-			/*
-
-			<tr>
-		                <th class="column-100">Articulo</th>
-		                <th>Nombre</th>
-		                <th class="column-100">Cantidad</th>
-		                <th class="column-100">Precio</th>
-		                <th class="column-100">SubTotal</th>
-		                <th class="column-50"></th>
-		    </tr>
-
-			<tr>
-		                <td class="column-100">Articulo</td>
-		                <td>Nombre</td>
-		                <td class="column-100">20</td>
-		                <td class="column-100">$0.00</td>
-		                <td class="column-100">$0.00</td>
-		                <td class="column-100"><a href="#"><img src="<?php echo $assets_uri; ?>img/ic_delete_black_24dp.png" alt=""></a></td>
-
-		            </tr>	
-
-			*/
+			
 
 
 			/*********************/
