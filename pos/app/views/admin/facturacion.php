@@ -92,7 +92,8 @@
 					    </div>
 					    <label for="txtCantidad" class="col-lg-1 control-label negrita">Cantidad:</label>
 					    <div class="col-lg-1">
-					      <input type="text" class="form-control" id="txtCantidad" placeholder="0" disabled onkeypress="return justNumbers(event);">
+					      <!--<input type="text" class="form-control" id="txtCantidad" placeholder="0" disabled onkeypress="return justNumbers(event);">-->
+					      <input type="text" class="form-control" id="txtCantidad" placeholder="0" disabled>
 					    </div>
 						<button type="button" class="btn btn-primary" id="btnAgregar" disabled><img src="<?php echo $assets_uri; ?>img/bt_speed_dial_1x.png" alt=""></button>
 					    <button type="button" class="btn btn-default" id="btnBuscarart" onclick="Buscar()" disabled><img src="<?php echo $assets_uri; ?>img/ic_search_grey600_18dp.png" alt=""></button>
